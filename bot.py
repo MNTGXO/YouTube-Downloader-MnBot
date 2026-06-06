@@ -1,8 +1,8 @@
-import os
 import asyncio
 import logging
 from pyrogram import Client
 from config import Config
+from mnbots.mnbots import start_health_server
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,6 +19,13 @@ app = Client(
     plugins=dict(root="plugins"),
 )
 
+async def main():
+    await start_health_server()
+    await app.start()
+    logger.info("Bot started. Idling...")
+    await asyncio.Event().wait()
+
 if __name__ == "__main__":
     logger.info("Starting MN Bots YT Downloader...")
-    app.run()
+    asyncio.run(main())
+    
