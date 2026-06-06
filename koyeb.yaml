@@ -1,0 +1,25 @@
+name: mn-ytdl-bot
+
+services:
+  - name: bot
+    type: worker
+    git:
+      repository: github.com/mntgxo/mn-ytdl-bot   # update to your repo
+      branch: main
+      buildpack: dockerfile
+    env:
+      - key: API_ID
+        value: ""          # fill in Koyeb dashboard or secrets
+      - key: API_HASH
+        value: ""
+      - key: BOT_TOKEN
+        value: ""
+      - key: YT_API
+        value: "https://youtube-downloader.mn-bots.workers.dev"
+      - key: MAX_FILE_SIZE
+        value: "2000"
+    instance_types: nano
+    scaling:
+      min: 1
+      max: 1
+    health_checks: []
