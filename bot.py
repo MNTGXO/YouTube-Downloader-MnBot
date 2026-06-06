@@ -2,7 +2,7 @@ import asyncio
 import logging
 from pyrogram import Client
 from config import Config
-from mnbots.mnbots import start_health_server
+from plugins.mnbots import start_health_server
 
 logging.basicConfig(
     level=logging.INFO,
