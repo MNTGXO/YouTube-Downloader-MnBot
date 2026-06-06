@@ -34,9 +34,9 @@ def extract_url(text: str) -> str | None:
 
 async def api_get(session: aiohttp.ClientSession, path: str, **params) -> dict:
     url = f"{YT_API}/{path}"
-    async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=30)) as r:
+    async with session.get(url, params=params, timeout=aiohttp.ClientTimeout(total=120)) as r:
         r.raise_for_status()
-        return await r.json()
+        return await r.json(content_type=None)
 
 
 async def fetch_info(session, yt_url: str) -> dict:
@@ -317,6 +317,7 @@ async def cb_download(client: Client, cq: CallbackQuery):
     await cq.message.edit_reply_markup(None)
 
     status = await cq.message.reply("⏳ Preparing download...")
+    dest = None
     try:
         async with aiohttp.ClientSession() as session:
             if kind == "mp4":
@@ -375,7 +376,7 @@ async def cb_download(client: Client, cq: CallbackQuery):
         await status.edit(f"❌ Failed: `{e}`")
     finally:
         try:
-            if dest.exists():
+            if dest and dest.exists():
                 dest.unlink()
         except Exception:
             pass
